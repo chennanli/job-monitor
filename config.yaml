@@ -1,0 +1,153 @@
+# Job Monitor Configuration
+# Last Updated: January 16, 2026
+
+# Email for notifications
+notification:
+  email: chennanli@gmail.com
+  send_empty: false  # Don't email if no new jobs found
+
+# Target companies and their job board URLs
+companies:
+  # Hot AI Companies
+  - name: Databricks
+    careers_url: https://www.databricks.com/company/careers
+    greenhouse_id: databricks
+    keywords_boost: ["energy", "utilities", "industrial", "manufacturing"]
+    
+  - name: Snowflake
+    careers_url: https://careers.snowflake.com
+    greenhouse_id: snowflakecomputing
+    keywords_boost: ["energy", "utilities", "industrial"]
+    
+  - name: Palantir
+    careers_url: https://www.palantir.com/careers
+    greenhouse_id: palantir
+    keywords_boost: ["energy", "infrastructure", "industrial"]
+    
+  - name: Scale AI
+    careers_url: https://scale.com/careers
+    greenhouse_id: scaleai
+    keywords_boost: ["industrial", "enterprise"]
+
+  # Big Tech - Cloud/Infrastructure
+  - name: Google
+    careers_url: https://www.google.com/about/careers
+    greenhouse_id: null
+    workday_url: null
+    keywords_boost: ["data center", "energy", "sustainability", "infrastructure"]
+    
+  - name: Microsoft
+    careers_url: https://careers.microsoft.com
+    greenhouse_id: null
+    keywords_boost: ["azure", "energy", "utilities", "sustainability", "data center"]
+    
+  - name: Amazon AWS
+    careers_url: https://www.amazon.jobs
+    greenhouse_id: null
+    keywords_boost: ["energy", "utilities", "industrial", "data center"]
+    
+  - name: Meta
+    careers_url: https://www.metacareers.com
+    greenhouse_id: null
+    keywords_boost: ["data center", "infrastructure", "capacity"]
+
+  # AI Infrastructure
+  - name: Anthropic
+    careers_url: https://www.anthropic.com/careers
+    greenhouse_id: anthropic
+    keywords_boost: ["infrastructure", "data center", "operations"]
+    
+  - name: OpenAI
+    careers_url: https://openai.com/careers
+    greenhouse_id: openai
+    keywords_boost: ["infrastructure", "operations"]
+
+  # Hot Infrastructure/Climate
+  - name: Crusoe Energy
+    careers_url: https://www.crusoeenergy.com/careers
+    greenhouse_id: crusoeenergysystems
+    keywords_boost: ["all"]  # All roles relevant
+    
+  - name: Anduril
+    careers_url: https://www.anduril.com/careers
+    greenhouse_id: andurilindustries
+    keywords_boost: ["simulation", "digital twin", "infrastructure"]
+
+# Job title patterns to match (case-insensitive)
+title_patterns:
+  high_priority:
+    - "solutions architect"
+    - "technical program manager"
+    - "tpm"
+    - "director.*data"
+    - "director.*ai"
+    - "director.*analytics"
+    - "head of.*data"
+    - "head of.*ai"
+    - "principal.*architect"
+    - "staff.*engineer.*platform"
+    - "customer engineer"
+    - "industry lead"
+    - "technical director"
+    
+  medium_priority:
+    - "product manager.*industrial"
+    - "product manager.*infrastructure"
+    - "senior.*manager.*data"
+    - "program manager"
+    - "pre.?sales"
+    - "field engineer"
+
+# Keywords that MUST appear (at least one) - in title OR description
+required_keywords:
+  - energy
+  - utilities
+  - industrial
+  - manufacturing
+  - data center
+  - infrastructure
+  - sustainability
+  - oil
+  - gas
+  - power
+  - grid
+  - renewable
+  - solar
+  - digital twin
+  - simulation
+  - operations
+  - fleet
+  - asset
+
+# Keywords to EXCLUDE (skip these roles)
+exclude_keywords:
+  - intern
+  - internship
+  - new grad
+  - entry level
+  - junior
+  - associate engineer
+  - "I"  # Level 1
+  - "II"  # Level 2 (want senior)
+
+# Location preferences
+locations:
+  preferred:
+    - remote
+    - san francisco
+    - bay area
+    - fremont
+    - california
+    - new york
+    - austin
+    - seattle
+  exclude:
+    - india
+    - bangalore
+    - hyderabad
+    - china
+    - singapore  # Unless remote
+
+# Salary filter (if available)
+salary:
+  minimum_usd: 180000

@@ -1,0 +1,5 @@
+# Job Monitor Dependencies
+# Install with: pip install -r requirements.txt
+
+pyyaml>=6.0
+requests>=2.28.0

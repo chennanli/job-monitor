@@ -1,0 +1,128 @@
+# GitHub Actions Workflow - Daily Job Scraper
+# Runs daily at 8:00 AM Pacific Time
+# Sends email notification via GitHub's email action
+
+name: Daily Job Scan
+
+on:
+  schedule:
+    # 8:00 AM Pacific = 16:00 UTC (during PST) or 15:00 UTC (during PDT)
+    # Using 16:00 UTC to cover PST
+    - cron: '0 16 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      send_email:
+        description: 'Send email notification'
+        required: false
+        default: 'true'
+        type: boolean
+      show_all:
+        description: 'Show all matching jobs (not just new)'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  scrape-jobs:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # Needed to commit seen_jobs.json
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml requests
+      
+      - name: Run job scraper
+        id: scraper
+        run: |
+          if [ "${{ github.event.inputs.show_all }}" == "true" ]; then
+            python scraper.py --email --all
+          else
+            python scraper.py --email
+          fi
+        continue-on-error: true
+      
+      - name: Check for new jobs
+        id: check_jobs
+        run: |
+          if [ -f "output/email_to_send.json" ]; then
+            echo "has_new_jobs=true" >> $GITHUB_OUTPUT
+            echo "📧 New jobs found, email will be sent"
+          else
+            echo "has_new_jobs=false" >> $GITHUB_OUTPUT
+            echo "No new jobs found today"
+          fi
+      
+      - name: Send email notification
+        if: steps.check_jobs.outputs.has_new_jobs == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: ${{ fromJson(steps.read_email.outputs.content).subject }}
+          to: chennanli@gmail.com
+          from: Job Monitor <${{ secrets.EMAIL_USERNAME }}>
+          html_body: file://output/email_to_send.json
+          content_type: text/html
+        continue-on-error: true
+      
+      # Alternative: Use GitHub's built-in notification
+      - name: Create GitHub Issue for new jobs
+        if: steps.check_jobs.outputs.has_new_jobs == 'true'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "🎯 New Jobs Found - ${{ github.run_id }}"
+          content-filepath: ./output/new_jobs.md
+          labels: |
+            jobs
+            automated
+        continue-on-error: true
+      
+      - name: Commit updated seen_jobs.json
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add seen_jobs.json output/new_jobs.md
+          git diff --staged --quiet || git commit -m "Update job tracking - $(date +'%Y-%m-%d')"
+          git push
+        continue-on-error: true
+      
+      - name: Upload results artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: job-results-${{ github.run_number }}
+          path: |
+            output/new_jobs.md
+            output/email_to_send.json
+          retention-days: 30
+
+  # Summary job
+  summary:
+    needs: scrape-jobs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Job Summary
+        run: |
+          echo "## 🎯 Job Monitor Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run Date:** $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check the [Actions artifacts](../../actions/runs/${{ github.run_id }}) for full results." >> $GITHUB_STEP_SUMMARY
