@@ -1,15 +1,7 @@
 # Job Monitor Results - NEW
-**Generated:** 2026-01-17 16:16
-**Total Jobs:** 1
+**Generated:** 2026-01-18 16:17
+**Total Jobs:** 0
 
-## Anthropic (1 jobs)
+No new matching jobs found today. 🎯
 
-### [Head of Asset & Wealth Management, GTM Sales](https://job-boards.greenhouse.io/anthropic/jobs/5041304008)
-- **Location:** New York City, NY; San Francisco, CA
-- **Relevance:** 20 (asset, location:san francisco)
-- **Posted:** 2026-01-14
-
----
-## Quick Apply Links
-
-- [Anthropic: Head of Asset & Wealth Management, GTM Sales](https://job-boards.greenhouse.io/anthropic/jobs/5041304008)
+Keep checking - the right role will appear!
