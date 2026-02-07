@@ -1,15 +1,7 @@
 # Job Monitor Results - NEW
-**Generated:** 2026-02-06 16:36
-**Total Jobs:** 1
+**Generated:** 2026-02-07 16:21
+**Total Jobs:** 0
 
-## Anthropic (1 jobs)
+No new matching jobs found today. 🎯
 
-### [Data Center Energy Lead](https://job-boards.greenhouse.io/anthropic/jobs/5109452008)
-- **Location:** Remote-Friendly (Travel Required) | San Francisco, CA
-- **Relevance:** 30 (energy, data center, location:remote)
-- **Posted:** 2026-02-05
-
----
-## Quick Apply Links
-
-- [Anthropic: Data Center Energy Lead](https://job-boards.greenhouse.io/anthropic/jobs/5109452008)
+Keep checking - the right role will appear!
